@@ -12,6 +12,8 @@ import java.util.ArrayList;
 public class ListViewAdapter extends BaseAdapter {
     //deklarasi variabel dengan jenis data context
     Context mContext;
+
+    //mengatur LayoutInflater dari context yang di berikan
     LayoutInflater inflater;
     private ArrayList<ClassNama> arrayList;
 
