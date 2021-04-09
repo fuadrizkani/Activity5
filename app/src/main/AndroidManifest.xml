@@ -9,14 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Activity4">
-        <activity android:name=".DaftarActivity"
-            android:parentActivityName=".MainActivity"></activity>
+
+        <activity android:name=".ActivityLihatData" android:label="@string/detailkontak" android:parentActivityName=".HomeActivity"/>
+        <activity android:name=".HomeActivity" android:label="@string/datakontak" android:parentActivityName=".MainActivity" />
 
         <activity
-            android:name=".ActivityKedua"
-            android:parentActivityName=".MainActivity"
-            android:label="Login Berhasil" />
-
+            android:name=".ActivityHasil"
+            android:label="@string/label2"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

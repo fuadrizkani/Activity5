@@ -13,94 +13,95 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    EditText edMail,edPass;
     Button btnLogin;
-
-    EditText edEmail, edPassword;
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.mnDaftar)
-        {
-            Intent i = new Intent(getApplicationContext(), DaftarActivity.class);
-            startActivity(i);
-        }
-        return super.onOptionsItemSelected(item);
-    }
+    String email, pass;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
+//        return super.onCreateOptionsMenu(menu);
     }
 
-    String nama, password;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.mnDaftar){
+            Intent i = new Intent(getApplicationContext(),DaftarActivity.class);
+            startActivity(i);
+        }
+        return true;
+//        return super.onOptionsItemSelected(item);
+    }
 
+    public int validasiData(){
+        String emailActive = "admin@mail.com";
+        String passActive = "123";
+        email = edMail.getText().toString();
+        pass = edPass.getText().toString();
+
+        if(emailActive.equals(email) && passActive.equals(pass)){ // BENAR SEMUA
+            return 1;
+        }
+        else if(emailActive.equals(email) && !passActive.equals(pass)){ // SALAH PASS
+            return 2;
+        }
+        else if(!emailActive.equals(email) && passActive.equals(pass)){ // SALAH EMAIL
+            return 3;
+        }
+        return 0;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btnLogin=findViewById(R.id.btSignIn);
-
-        edEmail=findViewById(R.id.edEmail);
-
-        edPassword=findViewById(R.id.edPassword);
+        edMail = findViewById(R.id.edEmail);
+        edPass = findViewById(R.id.edPassword);
+        btnLogin = findViewById(R.id.btSignIn);
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                nama = edEmail.getText().toString();
+            public void onClick(View v) {
+                email = edMail.getText().toString();
+                pass = edPass.getText().toString();
 
-                password = edPassword.getText().toString();
-
-                String email ="admin@mail.com";
-
-                String pass ="123";
-
-                if (nama.equals(email) && password.equals(pass)) {
+                if(email.isEmpty() || pass.isEmpty()){
                     Toast t = Toast.makeText(getApplicationContext(),
-                            "Login Sukses",
+                            "Email / Password tidak terisi !",
                             Toast.LENGTH_LONG);
-
                     t.show();
+                }else{
+                    if(validasiData() == 1){
+                        Toast t = Toast.makeText(getApplicationContext(),
+                                "Sukses !",
+                                Toast.LENGTH_LONG);
+                        t.show();
+                        Bundle b = new Bundle();
+                        b.putString("email",email.trim());
+                        b.putString("pass",pass.trim());
 
-                    Bundle b = new Bundle();
-
-                    b.putString("a", nama.trim());
-                    b.putString("b", password.trim());
-
-                    Intent i = new Intent(getApplicationContext(), DaftarActivity.class);
-                    i.putExtras(b);
-                    startActivity(i);
-
-
+                        Intent i = new Intent(getApplicationContext(),HomeActivity.class);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }else if(validasiData() == 0){
+                        Toast t = Toast.makeText(getApplicationContext(),
+                                "Email dan Password anda Salah !\n Silahkan Coba lagi",
+                                Toast.LENGTH_LONG);
+                        t.show();
+                    }else if(validasiData() == 2){
+                        Toast t = Toast.makeText(getApplicationContext(),
+                                "Password anda Salah !\n Silahkan Coba lagi",
+                                Toast.LENGTH_LONG);
+                        t.show();
+                    }else if(validasiData() == 3) {
+                        Toast t = Toast.makeText(getApplicationContext(),
+                                "Email anda Salah !\n Silahkan Coba lagi",
+                                Toast.LENGTH_LONG);
+                        t.show();
+                    }
                 }
 
-
-
-
-
-
-
-                if(edEmail.getText().toString().equals("admin@mail.com")&&edPassword.getText().toString().equals("123")) {
-                    Toast t = Toast.makeText(getApplicationContext(),
-                            "LOGIN SUKSES || email : " + nama + " password : " + password + "", Toast.LENGTH_LONG);
-                    t.show();
-                }
-                else if (!edEmail.getText().toString().equals("admin@mail.com")&&edPassword.getText().toString().equals("123")) {
-                    Toast t = Toast.makeText(getApplicationContext(),
-                            " Email salah ", Toast.LENGTH_SHORT);
-                    t.show();
-                }
-                else if (!edPassword.getText().toString().equals("123")&&edEmail.getText().toString().equals("admin@mail.com")) {
-                    Toast t = Toast.makeText(getApplicationContext(),
-                            " Password salah ", Toast.LENGTH_SHORT);
-                    t.show();
-                }
-                else{
-                    Toast.makeText((getApplicationContext()), "Username atau Password Anda salah",
-                            Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
